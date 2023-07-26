@@ -1,0 +1,35 @@
+apiVersion: app/v1
+kind: Deployment
+metadata:
+  name: microservices-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+       app: microservicio
+  template:
+    metadata:
+      labels:
+        app: microservicio
+    spec:
+      containers:
+        - name: microservicio
+          image: 8e15f6190e79/microservicio:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: microservices-clusterip-srv
+spec:
+ type: ClusterIP
+selector:
+  app: microservicio
+port:
+ - name: microservicio
+   protocolo: TCP
+   port: 80
+   targetPort: 80
+ - name: microserviciogrpc
+   protocolo: TCP
+   port: 666
+   targetPort: 666
